@@ -88,11 +88,7 @@ foreach ($line in [System.IO.File]::ReadLines($list_path)) {
 
     # 결과 파일에 쓰기
     $output_stream.WriteLine("{0}, {1}, {2}, {3} {4}", $url.Host, $ip_address, $is_up, $check_date.ToString("yyyy-MM-dd HH:mm:ss"), $check_date_millisecond)
-
 }
-
-# 결과 저장 파일 닫기
-$output_stream.Close()
 
 # 종료 시간 기록
 $end_time = Get-Date
@@ -108,13 +104,17 @@ $warning_ratio = $warning_count / $total_count * 100
 $nodomain_ratio = $nodomain_count / $total_count * 100
 $error_ratio = $error_count / $total_count * 100
 
-Write-Host "Total domains: $total_count"
-Write-Host "UP domains: $up_count, Ratio: $up_ratio%"
-Write-Host "RESET domains: $reset_count, Ratio: $reset_ratio%"
-Write-Host "WARNING domains: $warning_count, Ratio: $warning_ratio%"
-Write-Host "NODOMAIN domains: $nodomain_count, Ratio: $nodomain_ratio%"
-Write-Host "ERROR domains: $error_count, Ratio: $error_ratio%"
+$output_stream.Write("Total domains: $total_count / ")
+$output_stream.Write("UP domains: $up_count, Ratio: $up_ratio% / ")
+$output_stream.Write("RESET domains: $reset_count, Ratio: $reset_ratio% / ")
+$output_stream.Write("WARNING domains: $warning_count, Ratio: $warning_ratio% / ")
+$output_stream.Write("NODOMAIN domains: $nodomain_count, Ratio: $nodomain_ratio% / ")
+$output_stream.Write("ERROR domains: $error_count, Ratio: $error_ratio% / ")
 
 # 실행 시간 출력
-Write-Host "Execution time: $($execution_time.Hours) hour(s), $($execution_time.Minutes) minute(s), $($execution_time.Seconds) second(s)"
+$output_stream.Write("Execution time: $($execution_time.Hours) hour(s), $($execution_time.Minutes) minute(s), $($execution_time.Seconds) second(s)")
+
+# 결과 저장 파일 닫기
+$output_stream.Close()
+
 Write-Host "결과가 성공적으로 저장되었습니다."
