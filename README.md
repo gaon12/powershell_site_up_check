@@ -22,10 +22,12 @@ list.txt 파일은 <code>C:\list.txt</code>에 위치할 수 있도록 해주세
 결과값은 스크립트를 실행한 디렉토리에 <code>result.txt</code>로 저장되어 있습니다. 결과는 다음과 같이 나옵니다.
 
 ```
-www.naver.com, 223.130.200.107, UP
-www.gaonwiki.com, 104.21.82.129, UP
-uiharu.gaon.xyz, 129.154.210.92, UP
+www.naver.com, 223.130.200.107, UP, 2023-03-10 09:39:52 2994
+www.gaonwiki.com, 104.21.82.129, UP, 2023-03-10 09:39:53 3378
+uiharu.gaon.xyz, 129.154.210.92, UP, 2023-03-10 09:39:53 4083
 ```
+
+도메인, ip주소, 결과 코드, 확인 시간(연-월-일 시:분:초 밀리초) 형태로 결과가 나옵니다.
 
 ## 결과 코드 종류
 ### 정상 작동(UP)
@@ -45,8 +47,8 @@ warning.or.kr 또는 www.warning.or.kr로 이동하는 경우, WARNING이라고 
 ### 사이트가 존재하지 않는 경우(NODOMAIN)
 사이트가 존재하지 않는다는 코드인 <code>DNS_PROBE_FINISHED_NXDOMAIN</code>인 경우, NODOMAIN이라고 표시됩니다.
 
-### 기타 오류(Error)
-기타 오류는 Error라 뜹니다.
+### 기타 오류(ERROR)
+기타 오류는 ERROR라 뜹니다.
 
 # 주의사항
 다음 주의사항을 꼼꼼히 읽어주세요!

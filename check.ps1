@@ -70,12 +70,16 @@ foreach ($line in [System.IO.File]::ReadLines($list_path)) {
             $is_up = "NODOMAIN"
         }
         else {
-            $is_up = "Error"
+            $is_up = "ERROR"
         }
     }
 
+    # 체크 날짜/시간 확인
+    $check_date = Get-date
+    $check_date_millisecond = [int] (Get-Date).ToString("ffff")
+
     # 결과 파일에 쓰기
-    $output_stream.WriteLine("{0}, {1}, {2}", $url.Host, $ip_address, $is_up)
+    $output_stream.WriteLine("{0}, {1}, {2}, {3} {4}", $url.Host, $ip_address, $is_up, $check_date.ToString("yyyy-MM-dd HH:mm:ss"), $check_date_millisecond)
 }
 
 # 결과 저장 파일 닫기
