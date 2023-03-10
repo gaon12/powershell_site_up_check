@@ -1,11 +1,7 @@
-#########################################################
-#                                                       #
-#                  도메인 주소, ip주소 표시               #
-#                                                       #
-#                                                       #
-#########################################################
-
 $list_path = "C:\list.txt"
+
+# 시작 시간 기록
+$start_time = Get-Date
 
 # 파일 존재 여부 확인
 if (!(Test-Path $list_path)) {
@@ -19,6 +15,13 @@ if (Test-Path $output_file) {
     Remove-Item $output_file
 }
 $output_stream = [System.IO.StreamWriter]::new($output_file)
+
+# 도메인 상태별 카운트 초기화
+$up_count = 0
+$reset_count = 0
+$warning_count = 0
+$nodomain_count = 0
+$error_count = 0
 
 # 파일 내의 각 도메인 주소 또는 URL 값 반복적으로 읽기
 foreach ($line in [System.IO.File]::ReadLines($list_path)) {
@@ -52,6 +55,7 @@ foreach ($line in [System.IO.File]::ReadLines($list_path)) {
     try {
         $client.DownloadString($url)
         $is_up = "UP"
+        $up_count += 1
     }
     catch [System.Net.WebException] {
         if ($_.Exception.InnerException) {
@@ -62,15 +66,19 @@ foreach ($line in [System.IO.File]::ReadLines($list_path)) {
         }
         if ($error_message.Contains("ERR_CONNECTION_RESET")) {
             $is_up = "RESET"
+            $reset_count += 1
         }
         elseif ($url.Host.Equals("warning.or.kr") -or $url.Host.Equals("www.warning.or.kr")) {
             $is_up = "WARNING"
+            $warning_count += 1
         }
         elseif ($error_message.Contains("DNS_PROBE_FINISHED_NXDOMAIN")) {
             $is_up = "NODOMAIN"
+            $nodomain_count += 1
         }
         else {
             $is_up = "ERROR"
+            $error_count += 1
         }
     }
 
@@ -80,8 +88,33 @@ foreach ($line in [System.IO.File]::ReadLines($list_path)) {
 
     # 결과 파일에 쓰기
     $output_stream.WriteLine("{0}, {1}, {2}, {3} {4}", $url.Host, $ip_address, $is_up, $check_date.ToString("yyyy-MM-dd HH:mm:ss"), $check_date_millisecond)
+
 }
 
 # 결과 저장 파일 닫기
 $output_stream.Close()
+
+# 종료 시간 기록
+$end_time = Get-Date
+
+# 실행 시간 계산
+$execution_time = New-TimeSpan -Start $start_time -End $end_time
+
+# 도메인 상태별 수와 비율 출력
+$total_count = $up_count + $reset_count + $warning_count + $nodomain_count + $error_count
+$up_ratio = $up_count / $total_count * 100
+$reset_ratio = $reset_count / $total_count * 100
+$warning_ratio = $warning_count / $total_count * 100
+$nodomain_ratio = $nodomain_count / $total_count * 100
+$error_ratio = $error_count / $total_count * 100
+
+Write-Host "Total domains: $total_count"
+Write-Host "UP domains: $up_count, Ratio: $up_ratio%"
+Write-Host "RESET domains: $reset_count, Ratio: $reset_ratio%"
+Write-Host "WARNING domains: $warning_count, Ratio: $warning_ratio%"
+Write-Host "NODOMAIN domains: $nodomain_count, Ratio: $nodomain_ratio%"
+Write-Host "ERROR domains: $error_count, Ratio: $error_ratio%"
+
+# 실행 시간 출력
+Write-Host "Execution time: $($execution_time.Hours) hour(s), $($execution_time.Minutes) minute(s), $($execution_time.Seconds) second(s)"
 Write-Host "결과가 성공적으로 저장되었습니다."
