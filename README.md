@@ -1,6 +1,6 @@
 > You can also read to [English!](#english)
 # 이 저장소는
-현재 PC를 기준으로 도메인에 접속할 수 있는지 확인하는 코드입니다. 파워쉘 코드이며, 출력값은 다음과 같습니다.
+현재 PC를 기준으로 도메인에 접속할 수 있는지 확인하는 코드입니다. 파워쉘, C++ 언어, GO언어 코드이며, 출력값은 다음과 같습니다.
 
 * 사이트 주소
 * ip주소
@@ -62,7 +62,10 @@ warning.or.kr 또는 www.warning.or.kr로 이동하는 경우, WARNING이라고 
 ## list.txt 파일이 반드시 C드라이브 바로 밑에 있어야 해요.
 그러지 않으면 작동하지 않아요.
 
-#[](#English)What is this Repository?
+# 언어별 속도
+GO언어가 빠르고, C++ 언어가 두번째, 파워쉘 코드가 가장 느려요. 네트워크나 PC 사양에 따라 달라질 수 있어요.
+
+# [](#English)What is this Repository?
 Code to check if a domain is reachable based on the current PC. This is Powershell code, and the output is as follows.
 
 * site address
@@ -109,6 +112,9 @@ Of course, you need to be connected to the Internet to check.
 
 ## The list.txt file must be right under drive C.
 Otherwise, it won't work.
+
+# Compare speed
+Go lang > C++ lang >> Powershell
 
 # License
 [MIT](https://github.com/gaon12/powershell_site_up_check/blob/main/LICENSE)
